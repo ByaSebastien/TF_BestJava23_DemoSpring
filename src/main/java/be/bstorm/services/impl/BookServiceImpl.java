@@ -6,6 +6,8 @@ import be.bstorm.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BookServiceImpl implements BookService {
 
@@ -25,5 +27,10 @@ public class BookServiceImpl implements BookService {
         //appel de la methode contenue dans notre BookRepository
         //Permet de creer l enregistrement en db
         bookRepository.save(book);
+    }
+
+    @Override
+    public List<Book> findAll() {
+        return bookRepository.findAll();
     }
 }

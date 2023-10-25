@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Book list</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Titre</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="book : ${books}">
+          <td th:text="${book.id}"/>
+          <td th:text="${book.title}"/>
+        </tr>
+      </tbody>
+    </table>
+    <a th:href="@{/book/create}">Create new book</a>
+</body>
+</html>
