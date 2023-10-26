@@ -4,10 +4,7 @@ import be.bstorm.models.entities.Book;
 import be.bstorm.services.impl.BookServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,5 +38,14 @@ public class BookController {
         List<Book> books = bookService.findAll();
         model.addAttribute("books",books);
         return "book/index";
+    }
+
+    @GetMapping("/{id}")
+    public String findOneById(
+            @PathVariable Long id,
+            Model model){
+        Book book = bookService.findById(id);
+        model.addAttribute("book",book);
+        return "book/detail";
     }
 }

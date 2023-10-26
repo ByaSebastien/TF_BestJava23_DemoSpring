@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Book detail</h1>
+    <h2 th:text="${book.title}"/>
+    <div th:if="${book.description}">
+      <p th:text="${book.description}"/>
+    </div>
+    <a th:href="@{/book}">Back to list</a>
+</body>
+</html>

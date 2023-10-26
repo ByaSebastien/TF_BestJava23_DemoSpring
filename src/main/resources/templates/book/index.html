@@ -5,21 +5,25 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>Book list</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Titre</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="book : ${books}">
-          <td th:text="${book.id}"/>
-          <td th:text="${book.title}"/>
-        </tr>
-      </tbody>
-    </table>
-    <a th:href="@{/book/create}">Create new book</a>
+<h1>Book list</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Titre</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.id}"/>
+        <td th:text="${book.title}"/>
+        <td>
+            <a th:href="@{/book/{id}(id = ${book.id})}">Detail</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a th:href="@{/book/create}">Create new book</a>
 </body>
 </html>
