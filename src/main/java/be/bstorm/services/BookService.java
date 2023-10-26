@@ -8,4 +8,5 @@ public interface BookService {
 
     void create(Book book);
     List<Book> findAll();
+    Book findById(Long id);
 }

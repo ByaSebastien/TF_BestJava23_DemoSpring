@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -32,5 +34,15 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findAll() {
         return bookRepository.findAll();
+    }
+
+    @Override
+    public Book findById(Long id) {
+//        Optional<Book> book = bookRepository.findById(id);
+//        if(book.isEmpty()){
+//            throw new RuntimeException();
+//        }
+//        return book.get();
+        return bookRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 }
