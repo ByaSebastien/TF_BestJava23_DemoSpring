@@ -4,6 +4,7 @@ import be.bstorm.models.entities.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 //@Repository sert rendre cette class injectable(injection de dependance)
@@ -15,4 +16,5 @@ public interface BookRepository extends JpaRepository<Book,Long> {
     //Le type de l'entity qu'il doit gerer
     //Et en deuxieme le type de la colonne PK de cette entity
 
+    List<Book> findBooksByTitleContainingIgnoreCase(String title);
 }

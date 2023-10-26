@@ -8,5 +8,9 @@ public interface BookService {
 
     void create(Book book);
     List<Book> findAll();
+    List<Book> findManyByTitle(String title);
     Book findById(Long id);
+    void update(Long id,Book book);
+    void delete(Long id);
+
 }

@@ -37,6 +37,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<Book> findManyByTitle(String title) {
+        return bookRepository.findBooksByTitleContainingIgnoreCase(title);
+    }
+
+    @Override
     public Book findById(Long id) {
 //        Optional<Book> book = bookRepository.findById(id);
 //        if(book.isEmpty()){
@@ -44,5 +49,20 @@ public class BookServiceImpl implements BookService {
 //        }
 //        return book.get();
         return bookRepository.findById(id).orElseThrow(RuntimeException::new);
+    }
+
+    @Override
+    public void update(Long id, Book book) {
+        Book existingBook = findById(id);
+        existingBook.setTitle(book.getTitle());
+        existingBook.setDescription(book.getDescription());
+        bookRepository.save(existingBook);
+//        book.setId(id);
+//        bookRepository.save(book);
+    }
+
+    @Override
+    public void delete(Long id) {
+        bookRepository.deleteById(id);
     }
 }

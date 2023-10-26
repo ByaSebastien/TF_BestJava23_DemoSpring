@@ -6,6 +6,10 @@
 </head>
 <body>
 <h1>Book list</h1>
+<form th:action="@{/book/search}" method="post">
+    <label>Recherche : <input type="text" name="input"></label>
+    <button type="submit">Rechercher</button>
+</form>
 <table>
     <thead>
     <tr>
@@ -20,6 +24,8 @@
         <td th:text="${book.title}"/>
         <td>
             <a th:href="@{/book/{id}(id = ${book.id})}">Detail</a>
+            <a th:href="@{/book/update/{id}(id = ${book.id})}">Modifier</a>
+            <a th:href="@{/book/delete/{id}(id = ${book.id})}">Supprimer</a>
         </td>
     </tr>
     </tbody>
