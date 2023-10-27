@@ -39,7 +39,6 @@ public class BookController {
     public String findAll(Model model){
         List<Book> books = bookService.findAll();
         model.addAttribute("books",books);
-        model.addAttribute("input","");
         return "book/index.html";
     }
 
