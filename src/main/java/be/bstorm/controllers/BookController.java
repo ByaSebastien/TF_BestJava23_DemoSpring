@@ -80,7 +80,6 @@ public class BookController {
             @RequestParam("input") String input,
             Model model){
         List<Book> books = bookService.findManyByTitle(input);
-//        model.addAttribute("input","");
         model.addAttribute("books",books);
         return "book/index.html";
     }

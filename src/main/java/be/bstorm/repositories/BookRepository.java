@@ -2,6 +2,8 @@ package be.bstorm.repositories;
 
 import be.bstorm.models.entities.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,4 +19,9 @@ public interface BookRepository extends JpaRepository<Book,Long> {
     //Et en deuxieme le type de la colonne PK de cette entity
 
     List<Book> findBooksByTitleContainingIgnoreCase(String title);
+
+    @Query("select b from Book b where upper(b.title) like %:title%")
+    List<Book> searchByTitle(@Param("title") String title);
+
+
 }

@@ -38,7 +38,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> findManyByTitle(String title) {
-        return bookRepository.findBooksByTitleContainingIgnoreCase(title);
+        return bookRepository.searchByTitle(title.toUpperCase());
     }
 
     @Override
