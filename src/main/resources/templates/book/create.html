@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Create works</h1>
-    <form th:object="${book}" th:action="@{/book/create}" method="post">
+    <form th:object="${bookForm}" th:action="@{/book/create}" method="post">
         <label>Titre : <input type="text" th:field="*{title}"/></label>
         <label>Description : <input type="text" th:field="*{description}"/></label>
         <button type="submit">Valider</button>

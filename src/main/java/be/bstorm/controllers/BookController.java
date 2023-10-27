@@ -1,12 +1,16 @@
 package be.bstorm.controllers;
 
+import be.bstorm.models.dtos.BookShortDTO;
+import be.bstorm.models.dtos.BookShortRecord;
 import be.bstorm.models.entities.Book;
+import be.bstorm.models.forms.BookForm;
 import be.bstorm.services.impl.BookServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -23,54 +27,76 @@ public class BookController {
     }
 
     @GetMapping("/create")
-    public String getCreate(Model model){
+    public String getCreate(Model model) {
         //model sert a transferer des données entre le controller et la page html
-        model.addAttribute("book",new Book());
+        model.addAttribute("bookForm", new BookForm());
         return "book/create.html";
     }
 
     @PostMapping("/create")
-    public String postCreate(@ModelAttribute Book book){
+    public String postCreate(@ModelAttribute BookForm bookForm) {
+        //Map bookForm en un Book (entity)
+        Book book = bookForm.toEntity();
+        //Pour pouvoir l'envoyer a la methode create qui attend un Book(entity)
         bookService.create(book);
+//        bookService.create(bookForm.toEntity());
+        //Redirige vers la methode Get /book
         return "redirect:/book";
     }
 
     @GetMapping
-    public String findAll(Model model){
+    public String findAll(Model model) {
         List<Book> books = bookService.findAll();
-        model.addAttribute("books",books);
+        //On doit modifier tout les Book(entiy) en BookShortDTO
+//        List<BookShortDTO> dtos = new ArrayList<>();
+//        for (Book book : books){
+//            BookShortDTO dto = BookShortDTO.fromEntity(book);
+//            dtos.add(dto);
+//        }
+        //Avec stream
+        List<BookShortDTO> dtos = books.stream()
+                .map(b -> BookShortDTO.fromEntity(b))
+                .toList();
+        model.addAttribute("dtos", dtos);
         return "book/index.html";
     }
 
     @GetMapping("/{id}")
     public String findOneById(
             @PathVariable Long id,
-            Model model){
+            Model model) {
         Book book = bookService.findById(id);
-        model.addAttribute("book",book);
+        model.addAttribute("book", book);
         return "book/detail.html";
     }
 
     @GetMapping("/update/{id}")
     public String getUpdate(
             @PathVariable Long id,
-            Model model){
+            Model model) {
         Book book = bookService.findById(id);
-        model.addAttribute("id",id);
-        model.addAttribute("book",book);
+        //Map mon Book(entity) en un BookForm
+        //Pour pouvoir l'envoyer dans la vue via Model
+        BookForm bookForm = BookForm.fromEntity(book);
+        //Vu que BookForm n a pas d'id je l'envoie tel quel dans la vue via model
+        model.addAttribute("id", id);
+        model.addAttribute("bookForm", bookForm);
         return "book/update.html";
     }
 
     @PostMapping("update/{id}")
     public String postUpdate(
-            @ModelAttribute Book book,
-            @PathVariable Long id){
-        bookService.update(id,book);
+            @ModelAttribute BookForm bookForm,
+            @PathVariable Long id) {
+        //Map mon BookForm en un Book(entity)
+        Book book = bookForm.toEntity();
+        //Pour pouvoir l'envoyer a la methode update qui attend un Book(entity)
+        bookService.update(id, book);
         return "redirect:/book";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id){
+    public String delete(@PathVariable Long id) {
         bookService.delete(id);
         return "redirect:/book";
     }
@@ -78,9 +104,12 @@ public class BookController {
     @PostMapping("/search")
     public String search(
             @RequestParam("input") String input,
-            Model model){
+            Model model) {
         List<Book> books = bookService.findManyByTitle(input);
-        model.addAttribute("books",books);
+        List<BookShortDTO> dtos = books.stream()
+                .map(BookShortDTO::fromEntity)
+                .toList();
+        model.addAttribute("dtos", dtos);
         return "book/index.html";
     }
 }
