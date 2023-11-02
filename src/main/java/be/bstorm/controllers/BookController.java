@@ -1,16 +1,13 @@
 package be.bstorm.controllers;
 
-import be.bstorm.models.dtos.BookShortDTO;
-import be.bstorm.models.dtos.BookShortRecord;
+import be.bstorm.models.dtos.book.BookShortDTO;
 import be.bstorm.models.entities.Book;
-import be.bstorm.models.forms.BookForm;
-import be.bstorm.services.impl.BookServiceImpl;
+import be.bstorm.models.forms.book.BookForm;
+import be.bstorm.services.BookService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -19,10 +16,10 @@ public class BookController {
 
     //L'attribut qui permettra de stocker l'instance reservée de BookServiceImpl
     //Possible grace à l'annotation @Service
-    private final BookServiceImpl bookService;
+    private final BookService bookService;
 
     //Injection par constructeur du BookServiceImpl (Injection de dépendance)
-    public BookController(BookServiceImpl bookService) {
+    public BookController(BookService bookService) {
         this.bookService = bookService;
     }
 

@@ -1,4 +1,4 @@
-package be.bstorm.models.forms;
+package be.bstorm.models.forms.book;
 
 import be.bstorm.models.entities.Book;
 import lombok.Data;

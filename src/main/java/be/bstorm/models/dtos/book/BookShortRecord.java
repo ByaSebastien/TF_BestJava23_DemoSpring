@@ -1,4 +1,4 @@
-package be.bstorm.models.dtos;
+package be.bstorm.models.dtos.book;
 
 
 import be.bstorm.models.entities.Book;
