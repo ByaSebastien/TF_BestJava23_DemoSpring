@@ -6,8 +6,10 @@ import be.bstorm.models.entities.Movie;
 import be.bstorm.models.forms.movie.MovieForm;
 import be.bstorm.repositories.MovieRepository;
 import be.bstorm.services.MovieService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

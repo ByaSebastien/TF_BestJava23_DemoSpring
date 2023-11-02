@@ -1,11 +1,15 @@
 package be.bstorm.controllers;
 
+import be.bstorm.exceptions.UniqueBookException;
 import be.bstorm.models.dtos.book.BookShortDTO;
 import be.bstorm.models.entities.Book;
 import be.bstorm.models.forms.book.BookForm;
 import be.bstorm.services.BookService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,11 +35,23 @@ public class BookController {
     }
 
     @PostMapping("/create")
-    public String postCreate(@ModelAttribute BookForm bookForm) {
+    public String postCreate(
+            @ModelAttribute @Valid BookForm bookForm,
+            BindingResult br,
+            Model model) {
+        if (br.hasErrors()) {
+            return "book/create.html";
+        }
         //Map bookForm en un Book (entity)
         Book book = bookForm.toEntity();
-        //Pour pouvoir l'envoyer a la methode create qui attend un Book(entity)
-        bookService.create(book);
+        //Try catch pour receptionner unique exception
+        try {
+            //Pour pouvoir l'envoyer a la methode create qui attend un Book(entity)
+            bookService.create(book);
+        } catch (UniqueBookException e) {
+            model.addAttribute("uniqueException", e.getMessage());
+            return "book/create.html";
+        }
 //        bookService.create(bookForm.toEntity());
         //Redirige vers la methode Get /book
         return "redirect:/book";
@@ -83,12 +99,24 @@ public class BookController {
 
     @PostMapping("update/{id}")
     public String postUpdate(
-            @ModelAttribute BookForm bookForm,
-            @PathVariable Long id) {
+            @ModelAttribute @Valid BookForm bookForm,
+            BindingResult br,
+            @PathVariable Long id,
+            Model model) {
+        if (br.hasErrors()) {
+            model.addAttribute("id", id);
+            model.addAttribute("bookForm", bookForm);
+            return "book/update.html";
+        }
         //Map mon BookForm en un Book(entity)
         Book book = bookForm.toEntity();
-        //Pour pouvoir l'envoyer a la methode update qui attend un Book(entity)
-        bookService.update(id, book);
+        try {
+            //Pour pouvoir l'envoyer a la methode update qui attend un Book(entity)
+            bookService.update(id, book);
+        } catch (UniqueBookException e) {
+            model.addAttribute("uniqueException", e.getMessage());
+            return "book/update.html";
+        }
         return "redirect:/book";
     }
 

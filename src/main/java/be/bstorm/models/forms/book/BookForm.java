@@ -1,11 +1,14 @@
 package be.bstorm.models.forms.book;
 
 import be.bstorm.models.entities.Book;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 public class BookForm {
-
+    @NotBlank(message = "Le titre ne peut etre vide")
+    @Size(min = 2,max = 100,message = "Le titre doit faire entre 2 et 100 caracteres")
     private String title;
     private String description;
 

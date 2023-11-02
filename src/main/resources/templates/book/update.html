@@ -7,9 +7,11 @@
 <body>
 <h1>Update works</h1>
 <form th:object="${bookForm}" th:action="@{/book/update/{id}(id = ${id})}" method="post">
-  <label>Titre : <input type="text" th:field="*{title}"/></label>
-  <label>Description : <input type="text" th:field="*{description}"/></label>
-  <button type="submit">Valider</button>
+    <label>Titre : <input type="text" th:field="*{title}"/></label>
+    <p th:if="${#fields.hasErrors()}" th:errors="*{title}" style="color: red"></p>
+    <p th:if="${uniqueException}" th:text="${uniqueException}" style="color: red"></p>
+    <label>Description : <input type="text" th:field="*{description}"/></label>
+    <button type="submit">Valider</button>
 </form>
 <a th:href="@{/book}">Back to list</a>
 </body>

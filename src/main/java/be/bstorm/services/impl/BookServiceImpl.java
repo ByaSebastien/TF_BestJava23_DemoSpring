@@ -1,14 +1,12 @@
 package be.bstorm.services.impl;
 
+import be.bstorm.exceptions.UniqueBookException;
 import be.bstorm.models.entities.Book;
 import be.bstorm.repositories.BookRepository;
 import be.bstorm.services.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -26,6 +24,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void create(Book book) {
+        if(bookRepository.existsByTitle(book.getTitle())){
+            throw new UniqueBookException();
+        }
         //appel de la methode contenue dans notre BookRepository
         //Permet de creer l enregistrement en db
         bookRepository.save(book);
@@ -53,6 +54,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void update(Long id, Book book) {
+        if(bookRepository.existsByTitle(book.getTitle())){
+            throw new UniqueBookException();
+        }
         Book existingBook = findById(id);
         existingBook.setTitle(book.getTitle());
         existingBook.setDescription(book.getDescription());
