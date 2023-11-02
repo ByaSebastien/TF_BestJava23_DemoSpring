@@ -19,7 +19,7 @@
       <tr th:each="movie : ${movies}">
         <td th:text="${movie.id}"/>
         <td th:text="${movie.title}"/>
-        <td><a th:href="@{/movie/detail}">Detail</a></td>
+        <td><a th:href="@{/movie/detail/{id}(id = ${movie.id})}">Detail</a></td>
         <td><a th:href="@{/movie/update/{id}(id = ${movie.id})}">Update</a></td>
         <td><a th:href="@{/movie/delete/{id}(id = ${movie.id})}">Delete</a></td>
       </tr>

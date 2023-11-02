@@ -15,4 +15,11 @@ public class MovieForm {
         m.setDescription(this.description);
         return m;
     }
+
+    public static MovieForm fromEntity(Movie movie){
+        MovieForm form = new MovieForm();
+        form.setTitle(movie.getTitle());
+        form.setDescription(movie.getDescription());
+        return form;
+    }
 }

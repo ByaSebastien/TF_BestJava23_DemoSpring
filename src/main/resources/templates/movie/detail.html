@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie detail</title>
+</head>
+<body>
+  <h1>Movie Detail</h1>
+  <h2 th:text="${movie.title}"/>
+  <div th:if="${movie.description}">
+    <p th:text="${movie.description}"/>
+  </div>
+  <a th:href="@{/movie}">Back to List</a>
+</body>
+</html>
