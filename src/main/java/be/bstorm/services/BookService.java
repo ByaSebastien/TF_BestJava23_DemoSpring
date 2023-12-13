@@ -12,5 +12,5 @@ public interface BookService {
     Book findById(Long id);
     void update(Long id,Book book);
     void delete(Long id);
-
+    List<Book> getByCriteria(String title,String description);
 }

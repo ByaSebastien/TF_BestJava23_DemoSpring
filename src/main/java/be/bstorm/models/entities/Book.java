@@ -14,4 +14,7 @@ public class Book {
     private String title;
 
     private String description;
+
+    @ManyToOne(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
+    private Author author;
 }

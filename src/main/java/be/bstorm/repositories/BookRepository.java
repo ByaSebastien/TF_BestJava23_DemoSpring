@@ -2,6 +2,7 @@ package be.bstorm.repositories;
 
 import be.bstorm.models.entities.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 //@Repository sert rendre cette class injectable(injection de dependance)
 @Repository
-public interface BookRepository extends JpaRepository<Book,Long> {
+public interface BookRepository extends JpaRepository<Book,Long>, JpaSpecificationExecutor<Book> {
     //Extends JpaRepository permet d'avoir acces a toutes ces methodes.
     //CRUD classic et plus encore
     //C'est une interface generique qui prend en 1er argument

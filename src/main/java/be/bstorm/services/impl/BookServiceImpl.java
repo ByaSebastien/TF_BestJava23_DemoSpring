@@ -1,10 +1,15 @@
 package be.bstorm.services.impl;
 
 import be.bstorm.exceptions.UniqueBookException;
+import be.bstorm.models.entities.Author;
 import be.bstorm.models.entities.Book;
+import be.bstorm.repositories.AuthorRepository;
 import be.bstorm.repositories.BookRepository;
 import be.bstorm.services.BookService;
+import be.bstorm.services.BookSpecifications;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,20 +20,29 @@ public class BookServiceImpl implements BookService {
     //Attribut dans lequel on va stocker l'instance injectable de BookRepository
     //Fonctionne grace a l annotation @Repository
     private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
 
 
     //Injection via le constructeur de l'instance de BookRepository reservé en memoire
-    public  BookServiceImpl(BookRepository bookRepository){
+    public  BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository){
         this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
     }
 
+    @Transactional
     @Override
     public void create(Book book) {
-        if(bookRepository.existsByTitle(book.getTitle())){
-            throw new UniqueBookException();
-        }
-        //appel de la methode contenue dans notre BookRepository
-        //Permet de creer l enregistrement en db
+        //version sans author
+//        if(bookRepository.existsByTitle(book.getTitle())){
+//            throw new UniqueBookException();
+//        }
+//        //appel de la methode contenue dans notre BookRepository
+//        //Permet de creer l enregistrement en db
+//        bookRepository.save(book);
+
+        //Demo transaction
+        Author author = authorRepository.save(book.getAuthor());
+        book.setAuthor(author);
         bookRepository.save(book);
     }
 
@@ -68,5 +82,18 @@ public class BookServiceImpl implements BookService {
     @Override
     public void delete(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Book> getByCriteria(String title, String description) {
+
+        Specification<Book> spec = Specification.where(null);
+        if(title != null){
+            spec = spec.and(BookSpecifications.getByTitle(title));
+        }
+        if(description != null){
+            spec = spec.and(BookSpecifications.getByDescription(description));
+        }
+        return bookRepository.findAll(spec);
     }
 }
